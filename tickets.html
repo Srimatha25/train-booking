@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Ticket - BharatRail</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>🎫 BharatRail Ticket Confirmation</h1>
+  <div id="ticketDetails"></div>
+  <button onclick="downloadPDF()">Download Ticket as PDF</button>
+
+
+  <script>
+  const ticket = JSON.parse(localStorage.getItem("bharatRailTicket"));
+
+  if (ticket) {
+    document.getElementById("ticketDetails").innerHTML = `
+      <div id="ticketContent">
+        <h2>Passenger: ${ticket.name} (${ticket.gender}, Age ${ticket.age})</h2>
+        <p><strong>From:</strong> ${ticket.source}</p>
+        <p><strong>To:</strong> ${ticket.destination}</p>
+        <p><strong>Date:</strong> ${ticket.journeyDate}</p>
+        <p><strong>Seat Type:</strong> ${ticket.seatType}</p>
+        <p><strong>Seat Number:</strong> ${ticket.seatNumber}</p>
+        <p><strong>Total Fare:</strong> ₹${ticket.fare}</p>
+        <p><strong>Status:</strong> Confirmed ✅</p>
+      </div>
+    `;
+  } else {
+    document.getElementById("ticketDetails").innerHTML = "<p>No ticket found. Please book again.</p>";
+  }
+
+  function downloadPDF() {
+    const element = document.getElementById("ticketContent");
+    html2pdf().from(element).save("BharatRail_Ticket.pdf");
+  }
+</script>
+
+<button onclick="window.location.href='index.html'">Book Another Ticket</button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+</body>
+</html>

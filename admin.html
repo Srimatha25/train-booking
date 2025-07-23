@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel - BharatRail</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>BharatRail – Admin Panel</h1>
+  <div>
+  <input type="text" id="searchCity" placeholder="Search by city (From or To)">
+  <select id="seatFilter">
+    <option value="">All Seat Types</option>
+    <option value="reserved">Reserved</option>
+    <option value="unreserved">Unreserved</option>
+  </select>
+</div>
+
+  <table id="ticketsTable" border="1" cellpadding="10">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Date</th>
+        <th>Type</th>
+        <th>Seat</th>
+        <th>Fare</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const tickets = JSON.parse(localStorage.getItem("allBharatRailTickets")) || [];
+    const tbody = document.querySelector("tbody");
+
+    if (tickets.length === 0) {
+      tbody.innerHTML = "<tr><td colspan='9'>No bookings found.</td></tr>";
+    } else {
+     function displayTickets(filterCity = "", filterSeat = "") {
+  tbody.innerHTML = "";
+
+  const filtered = tickets.filter(ticket => {
+    const matchCity =
+      ticket.source.toLowerCase().includes(filterCity.toLowerCase()) ||
+      ticket.destination.toLowerCase().includes(filterCity.toLowerCase());
+    const matchSeat = filterSeat === "" || ticket.seatType === filterSeat;
+    return matchCity && matchSeat;
+  });
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = "<tr><td colspan='9'>No matching bookings found.</td></tr>";
+  } else {
+    filtered.forEach(ticket => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${ticket.name}</td>
+        <td>${ticket.age}</td>
+        <td>${ticket.gender}</td>
+        <td>${ticket.source}</td>
+        <td>${ticket.destination}</td>
+        <td>${ticket.journeyDate}</td>
+        <td>${ticket.seatType}</td>
+        <td>${ticket.seatNumber}</td>
+        <td>₹${ticket.fare}</td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+}
+
+displayTickets(); // default load
+
+// 🧠 Event listeners for filters
+document.getElementById("searchCity").addEventListener("input", function () {
+  displayTickets(this.value, document.getElementById("seatFilter").value);
+});
+
+document.getElementById("seatFilter").addEventListener("change", function () {
+  displayTickets(document.getElementById("searchCity").value, this.value);
+});
+
+    }
+  </script>
+
+</body>
+</html>

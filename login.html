@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login - BharatRail</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h2>Admin Login</h2>
+
+  <form onsubmit="return validateLogin()">
+    <input type="password" id="password" placeholder="Enter Admin Password" required />
+    <button type="submit">Login</button>
+  </form>
+
+  <p id="error" style="color: red;"></p>
+
+  <script>
+    function validateLogin() {
+      const password = document.getElementById("password").value;
+      const correctPassword = "bharat123"; // You can change this
+
+      if (password === correctPassword) {
+        window.location.href = "admin.html"; // Redirect on success
+        return false; // Prevent form reload
+      } else {
+        document.getElementById("error").innerText = "Incorrect password. Try again.";
+        return false;
+      }
+    }
+  </script>
+</body>
+</html>
