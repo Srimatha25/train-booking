@@ -46,5 +46,5 @@ localStorage.setItem("bharatRailTicket", JSON.stringify(ticket));
 
 
   // ✅ Redirect to ticket confirmation page
-  window.location.href = "ticket.html";
+  window.location.href = "tickets.html";
 });
